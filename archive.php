@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+    // Alkalmazás logika:
+    include('config.inc.php');
+
+    // adatok összegyűjtése:
+    $kepek = array();
+    $olvaso = opendir($MAPPA);
+    while (($fajl = readdir($olvaso)) !== false) {
+        if (is_file($MAPPA.$fajl)) {
+            $vege = strtolower(substr($fajl, strlen($fajl)-4));
+            if (in_array($vege, $TIPUSOK)) {
+                $kepek[$fajl] = filemtime($MAPPA.$fajl);
+            }
+        }
+    }
+    closedir($olvaso);
+
+    // Megjelenítés logika:
+?><!DOCTYPE html>
+<html lang="hu">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Cégünk</title>
+  <title>Archívum</title>
 	<link rel="icon" href="img/Fevicon.png" type="image/png">
 
   <link rel="stylesheet" href="vendors/bootstrap/bootstrap.min.css">
@@ -15,6 +33,11 @@
   <link rel="stylesheet" href="vendors/owl-carousel/owl.carousel.min.css">
 
   <link rel="stylesheet" href="css/style.css">
+  <style type="text/css">
+      div#galeria {margin: 0 auto; width: 620px;}
+      div.kep { display: inline-block; }
+      div.kep img { width: 200px; }
+  </style>
 </head>
 <body>
   <!--================Header Menu Area =================-->
@@ -33,9 +56,9 @@
           <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
             <ul class="nav navbar-nav menu_nav justify-content-center">
               <li class="nav-item"><a class="nav-link" href="index.html">Kezdőlap</a></li>
-              <li class="nav-item active"><a class="nav-link" href="cegunk.html">Cégünkről</a>
+              <li class="nav-item"><a class="nav-link" href="cegunk.html">Cégünkről</a>
                 <li class="nav-item"><a class="nav-link" href="hirek.html">Hírek</a>
-              <li class="nav-item"><a class="nav-link" href="archive.php">Archívum</a></li>
+              <li class="nav-item  active"><a class="nav-link" href="archive.php">Archívum</a></li>
               <li class="nav-item"><a class="nav-link" href="kepek_feltolt.php">Képek feltöltése</a></li>
               <li class="nav-item"><a class="nav-link" href="contact.html">Kapcsolatfelvétel</a></li>
             </ul>
@@ -49,57 +72,51 @@
   </header>
   <!--================Header Menu Area =================-->
 
-  <!--================ Hero sm banner start =================-->
+  <!--================ Hero sm Banner start =================-->
   <section class="mb-30px">
     <div class="container">
       <div class="hero-banner">
         <div class="hero-banner__content">
           <h3>KÖVA-KOM NONPROFIT ZRT.</h3>
-            <h1>Cégünkről</h1>
+            <h1>Archívum</h1>
         </div>
       </div>
     </div>
   </section>
-  <!--================ Hero sm banner end =================-->
+  <!--================ Hero sm Banner end =================-->
 
 
 
-  <!-- ================ contact section start ================= -->
-  <ul align = "left">
+  <!--================ Start Blog Post Area =================-->
+  <section class="blog-post-area section-margin">
+    <div class="container">
+      <div class="row">
+        <div id="galeria">
+        <?php
+        arsort($kepek);
+        foreach($kepek as $fajl => $datum)
+        {
+        ?>
+            <div class="kep">
+                <a href="<?php echo $MAPPA.$fajl ?>">
+                    <img src="<?php echo $MAPPA.$fajl ?>">
+                </a>
+                <p>Név:  <?php echo $fajl; ?></p>
+                <p>Dátum:  <?php echo date($DATUMFORMA, $datum); ?></p>
+            </div>
+        <?php
+        }
+        ?>
+        </div>
 
-  <h1 align = "center">KÖVA-KOM Nonprofit Zrt. bemutatása </h1>
-
-
-KÖVA-KOM Nonprofit Zrt. zártkörű részvénytársaságként működik 1991. december 20-a óta.
-<p>
-A hulladékról szóló törvény értelmében 2014. január 1-jétől csak olyan szervezetek végezhetnek hulladékgazdálkodási közszolgáltatást, amelyek többségi állami, vagy önkormányzati tulajdonú nonprofit szervezetek. Ez volt az oka annak, hogy 2014-ben nonprofittá változott a Társaság, s így üzletszerű gazdasági tevékenységet csak kiegészítő jelleggel folytathat.
-<p>
-Jelen Társaság esetében a közgyűlés hatáskörét az alapító, Nagykőrös Város Önkormányzata gyakorolja. A közgyűlés hatáskörébe tartozó kérdésekben az alapító írásban határoz és a döntés az ügyvezetéssel való közléssel válik hatályossá. Az igazgatóság jogait a vezérigazgató gyakorolja, és a vezérigazgató képviseli a Társaságot, továbbá jogosult önálló cégjegyzésre. A felügyelőbizottság 3 tagból áll, tagjait az alapító jelöli ki, 5 éves időtartamra.
-<p>
-A KÖVA-KOM Nonprofit Zrt. helyi szolgáltatásokat ellátó, önkormányzati tulajdonú társaság. Tevékenysége több fő ágazatból áll, melyek a következőek:
-<hr>
-<h2>Hulladékgazdálkodás:</h2>
-Társaságunk legjelentősebb tevékenysége a települési szilárd hulladék, szelektív hulladék gyűjtése, illetve a nem közművel összegyűjtött települési folyékony hulladék gyűjtése és szennyvíztisztító telepre történő szállítása, melyet kötelező helyi közszolgáltatás útján látunk el. A Zrt. feladatai közé tartozik települési köztisztasági feladok ellátása is: városi utak tisztítása, kézi tározók ürítése, valamint az illegális hulladékok elszállítása.
-
-<hr>
-<h2>Távhőszolgáltatás:</h2>
-Társaságunk 2013. július 1-től látja el Nagykőrös Város távhőszolgáltatását kettő fűtőművel.
-<hr>
-<h2>Ingatlankezelés:</h2>
-A Zrt. hatáskörébe tartozik a vagyonkezelői és bérbeadói jog gyakorlása, így a Társaság végzi a 188 önkormányzati és a 3 saját tulajdonú lakás, illetve a 43 önkormányzati és 24 saját tulajdonú üzlethelyiségek karbantartását, állagmegóvását, felújítását, korszerűsítését.
-<hr>
-<h2>Városüzemeltetési feladatok ellátása:</h2>
-A KÖVA-KOM Nonprofit Zrt. végzi a bel- és külterületi utak ellenőrzését, rendezését, karbantartását állagmegóvását és a III., IV., V., VI., VII. rendű utak ellenőrzését, város csapadékvíz elvezető rendszerének tisztántartását, karbantartását, forgalomirányítási eszközök vizsgálatát, szükség esetén a forgalommódosításhoz kapcsolódó táblák kihelyezését, megszüntetését. Mindezen túl szakfelügyeletet biztosítása az önkormányzati tulajdonú utak és csapadékvíz hálózat esetén.
-<hr>
-<h2>Erdei iskola:</h2>
-A Társaság hatáskörébe tartozik a nagykőrösi Pálfájai Oktatóközpont működtetése, karbantartása. Minden évben rendszerint megrendezésre kerülnek a gyerekek számára igénybe vehető nyári táborok – nappali és bentalvós –, havi rendszerességgel 5 órai teadélutánokon lehet részt venni, illetve a családoknak és iskoláknak Kutatónapot szerveznek a Pálfájában.
-<hr>
-<h2>Piac-vásár:</h2>
-Nagykőrös Város Önkormányzata a KÖVA-KOM Nonprofit Zrt. által minden hónap utolsó vasárnapján Országos Állat és Kirakodóvásárt rendez, és folyamatosan fenntartja, ellátja a Nagykőrösi Piac üzemeltetési feladatait.
-
-</ul>
-	<!-- ================ contact section end ================= -->
-
+        <!-- Start Blog Post Siddebar -->
+              </div>
+            </div>
+          </div>
+        <!-- End Blog Post Siddebar -->
+      </div>
+  </section>
+  <!--================ End Blog Post Area =================-->
 
   <!--================ Start Footer Area =================-->
   <footer class="footer-area section-padding">
