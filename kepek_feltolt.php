@@ -67,7 +67,7 @@
               <li class="nav-item"><a class="nav-link" href="cegunk.html">Cégünkről</a>
                 <li class="nav-item"><a class="nav-link" href="hirek.html">Hírek</a>
               <li class="nav-item"><a class="nav-link" href="archive.php">Archívum</a></li>
-              <li class="nav-item active"><a class="nav-link" href="kepek_feltolt.html">Képek feltöltése</a></li>
+              <li class="nav-item active"><a class="nav-link" href="kepek_feltolt.php">Képek feltöltése</a></li>
               <li class="nav-item"><a class="nav-link" href="contact.html">Kapcsolatfelvétel</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right navbar-social">
